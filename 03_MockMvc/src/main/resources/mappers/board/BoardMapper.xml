@@ -4,13 +4,13 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.shark.boot03.board.mapper.BoardMapper">
   
-  <select id="selectBoardList" resultType="org.shark.boot03.board.dto.BoardDTO">
+  <select id="selectBoardList" resultType="BoardDTO">
     SELECT bid, title, content, created_at
       FROM tbl_board
      ORDER BY bid DESC
   </select>
   
-  <select id="selectBoardById" resultType="org.shark.boot03.board.dto.BoardDTO">
+  <select id="selectBoardById" resultType="BoardDTO">
     SELECT bid, title, content, created_at
       FROM tbl_board
      WHERE bid = #{bid}
