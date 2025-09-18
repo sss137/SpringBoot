@@ -11,7 +11,6 @@ import org.shark.boot05.board.dto.BoardDTO;
  * 1. XML의 namespace는 반드시 Mapper Interface의 전체 클래스명과 일치해야 합니다.
  * 2. XML의 SQL id는 반드시 Mapper Interface의 메소드명과 일치해야 합니다.
  */
-
 @Mapper
 public interface BoardMapper {
 

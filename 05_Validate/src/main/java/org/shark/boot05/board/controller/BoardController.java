@@ -1,17 +1,24 @@
 package org.shark.boot05.board.controller;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.shark.boot05.board.dto.BoardDTO;
 import org.shark.boot05.board.service.BoardService;
 import org.shark.boot05.common.dto.PageDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /*
@@ -49,20 +56,79 @@ public class BoardController {
     return "board/list";
   }
   
-  @GetMapping("/detail")
-  public String detail(@RequestParam(value = "bid") Long bid, Model model) {
-    model.addAttribute("board", boardService.getBoardById(bid));
+  @GetMapping("/board/detail")
+  public String detail(@RequestParam(value = "bid", required = false) Long bid,
+                        Model model) {
+    if (bid == null) {
+      throw new IllegalArgumentException("게시글 ID 정보를 확인할 수 없습니다.");
+    }
+    if (bid <= 0) {
+      throw new IllegalArgumentException("게시글 ID는 1 이상의 정수여야 합니다.");
+    }
+    BoardDTO foundBoard = boardService.getBoardById(bid);
+    if (foundBoard == null) {
+      throw new NoSuchElementException("게시글 ID가 " + bid + "인 게시글이 존재하지 않습니다.");
+    }
+    model.addAttribute("board", foundBoard);
     return "board/detail";
   }
   
-  @PostMapping("/write")
-  public String write(BoardDTO board, RedirectAttributes redirectAttr) {
-    redirectAttr.addFlashAttribute("msg", boardService.createBoard(board) ? "등록 성공" : "등록 실패");
-    return "redirect:/board/list";
+  @GetMapping("/board/write")
+  public String writeForm(@ModelAttribute(value = "board") BoardDTO board) {
+    return "board/writeForm";
   }
   
-  @PostMapping("/update")
-  public String update(BoardDTO board, RedirectAttributes redirectAttr) {
+  @PostMapping("/board/create")
+  public String create(@Valid BoardDTO board,   //BoardDTO 유효성 검사를 합니다.
+                        BindingResult bindingResult,   //@Valid 검증 결과를 저장합니다.
+                        Model model,
+                        RedirectAttributes redirectAttr) {
+    //유효성 검사를 통과하지 못한 경우 writeForm으로 되돌아 갑니다.
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("errors", bindingResult);
+      model.addAttribute("board", board);
+      return "board/writeForm";
+    }
+    //등록 시 오류가 발생하면 writeForm으로 리다이렉트
+    try {
+      boolean success = boardService.createBoard(board);
+      redirectAttr.addFlashAttribute("msg", success ? "등록 성공" : "등록 실패");
+      return "redirect:/board/list";
+    } catch (Exception e) {
+      redirectAttr.addFlashAttribute("insertError", "게시글 등록 중 오류가 발생했습니다.")
+                  .addFlashAttribute("board", board);
+      return "redirect:/board/write";
+    }
+    
+  }
+  
+  @GetMapping("/board/edit")
+  public String editForm(@RequestParam(value = "bid", required = false) Long bid,
+                          Model model) {
+    if (bid == null) {
+      throw new IllegalArgumentException("게시글 ID 정보를 확인할 수 없습니다.");
+    }
+    if (bid <= 0) {
+      throw new IllegalArgumentException("게시글 ID는 1 이상의 정수여야 합니다.");
+    }
+    BoardDTO foundBoard = boardService.getBoardById(bid);
+    if (foundBoard == null) {
+        throw new NoSuchElementException("게시글 ID가 " + bid + "인 게시글이 존재하지 않습니다.");
+    }
+    model.addAttribute("board", foundBoard);
+    return "board/editForm";
+  }
+  
+  @PostMapping("/board/update")
+  public String update(@Valid BoardDTO board,
+                        BindingResult bindingResult,
+                        Model model,
+                        RedirectAttributes redirectAttr) {
+    if (bindingResult.hasErrors()) {
+      model.addAttribute("errors", bindingResult);
+      model.addAttribute("board", board);
+      return "board/editForm";
+    }
     //성공하면 상세, 실패하면 목록
     Boolean success = boardService.updateBoard(board);
     if (success) {
@@ -76,10 +142,27 @@ public class BoardController {
     
   }
   
-  @PostMapping("/delete")
-  public String delete(Long bid, RedirectAttributes redirectAttr) {
-    redirectAttr.addFlashAttribute("msg", boardService.deleteBoard(bid) ? "삭제 성공" : "삭제 실패");
-    return "redirect:/board/list";
+  @PostMapping("/board/delete")
+  public String delete(
+      @RequestParam(value = "bid", required = false) Long bid, 
+      RedirectAttributes redirectAttr
+  ) {
+    if (bid == null) {
+      throw new IllegalArgumentException("게시글 ID 정보를 확인할 수 없습니다.");
+    }
+    if (bid <= 0) {
+      throw new IllegalArgumentException("게시글 ID는 1 이상의 정수입니다.");
+    }
+    try {
+      boolean success = boardService.deleteBoard(bid);
+      redirectAttr.addFlashAttribute("msg", success ? "삭제 성공" : "삭제 실패");
+      return "redirect:/board/list";
+    } catch (Exception e) {
+      redirectAttr.addFlashAttribute("deleteError", "게시글 삭제 중 오류가 발생했습니다.")
+                  .addAttribute("bid", bid);
+      return "redirect:/board/edit";
+    }
+
   }
   
 }
