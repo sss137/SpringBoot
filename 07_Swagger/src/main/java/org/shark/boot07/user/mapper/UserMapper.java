@@ -1,10 +1,10 @@
-package org.shark.boot06.user.mapper;
+package org.shark.boot07.user.mapper;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.shark.boot06.user.dto.UserDTO;
+import org.shark.boot07.user.dto.UserDTO;
 
 @Mapper
 public interface UserMapper {
