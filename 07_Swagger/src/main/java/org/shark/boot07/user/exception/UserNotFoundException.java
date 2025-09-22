@@ -2,8 +2,17 @@ package org.shark.boot07.user.exception;
 
 public class UserNotFoundException extends RuntimeException{
 
-  public UserNotFoundException(String message) {
+  private static final long serialVersionUID = -7116668109450937587L;
+
+  private int errorCode;
+  
+  public UserNotFoundException(int errorCode, String message) {
     super(message);
+    this.errorCode = errorCode;
+  }
+
+  public int getErrorCode() {
+    return errorCode;
   }
   
 }

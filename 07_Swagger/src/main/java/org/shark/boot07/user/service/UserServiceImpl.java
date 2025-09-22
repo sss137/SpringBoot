@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
   public UserDTO getUserById(Long uid) {
     UserDTO foundUser = userMapper.selectUserById(uid);
     if (foundUser == null) {
-      throw new UserNotFoundException("회원 ID (" + uid + ") 조회 실패(상세)");
+      throw new UserNotFoundException(1, "회원 ID (" + uid + ") 조회 실패");
     } else {
       return foundUser;
     }
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     user.setUid(uid);
     int updatedCount = userMapper.updateUser(user);
     if (updatedCount == 0) {
-      throw new UserNotFoundException("회원 ID (" + uid + ") 조회 실패(수정)");
+      throw new UserNotFoundException(2, "회원 ID (" + uid + ") 조회 실패");
     }
     return userMapper.selectUserById(uid);
   }
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
   public void deleteUser(Long uid) {
     int deletedCount = userMapper.deleteUser(uid);
     if (deletedCount == 0) {
-      throw new UserNotFoundException("회원 ID (" + uid + ") 조회 실패(삭제)");
+      throw new UserNotFoundException(3, "회원 ID (" + uid + ") 조회 실패");
     }
   }
 

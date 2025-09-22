@@ -13,7 +13,6 @@ import org.testng.annotations.Test;
 
 /*
  * TestNG
- * 
  * 1. TestNG는 Java 기반의 강력한 테스트 프레임워크입니다.
  * 2. JUnit의 대안으로 사용되며 더 풍부한 기능과 유연성을 제공합니다.
  * 3. 주요 기능
