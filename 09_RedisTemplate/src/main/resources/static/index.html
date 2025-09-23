@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RedisTemplate</title>
+</head>
+<body>
+
+  <h2>Board RedisTemplate CRD 테스트</h2>
+
+  <div>
+    <h3>게시글 저장/조회/삭제</h3>
+    <label>bid: <input type="text" id="bid"></label><br>
+    <label>title: <input type="text" id="title"></label><br>
+    <label>content: <input type="text" id="content"></label><br>
+    <button type="button" onclick="saveBoard()">저장</button>
+    <button type="button" onclick="getBoard()">조회</button>
+    <button type="button" onclick="deleteBoard()">삭제</button>
+  </div>
+
+  <br><br>
+
+  <div id="result"></div>
+
+  <script>
+  
+    const baseUrl = "/api/boards";
+    
+    //저장
+    async function saveBoard() {
+      const bid = document.getElementById("bid").value;
+      const title = document.getElementById("title").value;
+      const content = document.getElementById("content").value;
+      
+      if(!bid || !title || !content) {
+        alert("모든 필드를 입력하세요.");
+        return;
+      }
+
+      //@RequestBody가 없으면 FormData 만들어서 보냅니다.
+      //public String saveBoard(BoardDTO boardDTO) {}
+      const formData = new FormData();
+      formData.append('bid', bid);
+      formData.append('title', title);
+      formData.append('content', content);
+
+      //@RequestBody가 있으면 JSON 만들어서 보냅니다.
+      //public String saveBoard(@RequestBody BoardDTO boardDTO) {}
+      const board = JSON.stringify({
+        bid: Number(bid),
+        title: title,
+        content: content,
+      });
+      
+      const response = await fetch(baseUrl, {
+        method: "POST",
+        headers: {
+          //"Content-Type": "multipart/form-data",  <<  FormData 보낼 때
+          //"Content-Type": "application/json",  <<  JSON 보낼 때
+          "Accept": "text/plain"  //이건 받는 데이터의 타입 (String 받을 때)  <<  이것도 생략 가능
+        },
+        body: formData
+        // body: board
+      });
+      if (response.ok) {          
+        const text = await response.text();
+        alert(text);
+      } else {
+        const errorText = await response.text();
+        alert(`오류발생(${response.status}) : ${errorText}`);
+      }
+
+    }
+    
+    //조회
+    async function getBoard() {
+      const bid = document.getElementById("bid").value;
+      
+      if(!bid) {
+        alert("조회할 bid를 입력하세요.");
+        return;
+      }
+      
+      const response = await fetch(`${baseUrl}/${bid}`);
+      if(response.ok) {
+        const board = await response.json();
+        document.getElementById("result").textContent = JSON.stringify(board);
+      } else {
+        document.getElementById("result").textContent = `오류: ${response.statusText}`;
+      }
+    }
+    
+    //삭제
+    async function deleteBoard() {
+      const bid = document.getElementById("bid").value;
+      
+      if(!bid) {
+        alert("삭제할 bid를 입력하세요.");
+        return;
+      }
+      
+      const response = await fetch(`${baseUrl}/${bid}`, {
+        method: "DELETE"
+      });
+      if(response.ok) {
+        const text = await response.text();
+        alert(text);
+      } else {
+        const errorText = await response.text();
+        alert(`오류발생(${response.status}) : ${errorText}`);
+      }
+    }
+    
+  </script>
+  
+</body>
+</html>

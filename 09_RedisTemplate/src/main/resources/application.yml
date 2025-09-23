@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: 09_RedisTemplate
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
