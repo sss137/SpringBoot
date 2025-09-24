@@ -32,22 +32,22 @@ public class BoardRedisService {
    * }
    */
   
-  //----- prefix
+  //prefix
   private static final String PREFIX = "board:";
   
-  //----- 저장
+  //저장
   public void save(BoardDTO boardDTO) {
     ValueOperations<String, BoardDTO> ops = redisTemplate.opsForValue();
     ops.set(PREFIX + boardDTO.getBid(), boardDTO);
   }
   
-  //----- 조회 (bid를 받아서 해당하는 BoardDTO 객체 반환)
+  //조회 (bid를 받아서 해당하는 BoardDTO 객체 반환)
   public BoardDTO findById(Long bid) {
     ValueOperations<String, BoardDTO> ops = redisTemplate.opsForValue();
     return ops.get(PREFIX + bid);
   }
   
-  //----- 삭제 (bid를 받아서 해당하는 BoardDTO 삭제)
+  //삭제 (bid를 받아서 해당하는 BoardDTO 삭제)
   public void deleteById(Long bid) {
     redisTemplate.delete(PREFIX + bid);
   }
