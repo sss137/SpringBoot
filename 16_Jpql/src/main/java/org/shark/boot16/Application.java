@@ -1,4 +1,4 @@
-package org.shark.boot08;
+package org.shark.boot16;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
