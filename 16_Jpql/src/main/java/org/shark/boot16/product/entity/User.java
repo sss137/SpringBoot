@@ -17,11 +17,9 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "users")
-
 @Getter
 @Setter
 public class User {
-  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
@@ -47,13 +45,13 @@ public class User {
 
   @Column(name = "withdraw_yn", nullable = false)
   private Boolean withdrawYn = false;
-/*
+
   @OneToMany(mappedBy = "user")
   private List<Order> orders;
 
   @OneToMany(mappedBy = "user")
   private List<Payment> payments;
-*/
+
   protected User() {}
 
   public static User createUser(String username, Contact contact, String address, LocalDate birthDate) {

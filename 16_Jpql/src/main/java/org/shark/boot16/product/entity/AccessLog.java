@@ -15,11 +15,9 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "access_logs")
-
 @Getter
 @Setter
 public class AccessLog {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "log_id")

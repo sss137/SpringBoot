@@ -6,11 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Embeddable
-
 @Getter
 @Setter
 public class Contact {
-  
   @Column(unique = true, length = 100)
   private String email;
 

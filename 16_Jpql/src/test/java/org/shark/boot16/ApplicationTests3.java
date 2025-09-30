@@ -1,9 +1,11 @@
 package org.shark.boot16;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -62,6 +64,7 @@ class ApplicationTests3 {
 	                             .getResultList();
 	  products.stream().forEach(product -> System.out.println(product));
 	  // products.stream().forEach(System.out::println);
+	  Assertions.assertTrue(em.contains(products));   //내부 조인 결과는 영속 컨텍스트에 저장되지 않습니다.
 	}
 	
 	@Test
@@ -81,8 +84,17 @@ class ApplicationTests3 {
 	  products.stream().forEach(System.out::println);
 	}
 
+	@Test
+  @DisplayName("외부 조인 테스트")
+	void outerJoinTest() {
+	  //제품이 속하지 않은 카테고리도 함께 조회하기
+	  String jpql = "SELECT p.productName, c.categoryName FROM Product p RIGHT OUTER JOIN p.category c ORDER BY c.categoryId";   //OUTER 생략 가능
+	  List<Object[]> categories = em.createQuery(jpql, Object[].class)
+	                                .getResultList();
+	  categories.forEach(objArr -> System.out.println(Arrays.toString(objArr)));
+	  Assertions.assertTrue(em.contains(categories));   //외부 조인 결과는 영속 컨텍스트에 저장되지 않습니다.
+	}
 
-
-	
-  
 }
+
+
