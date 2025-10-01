@@ -3,6 +3,7 @@ package org.shark.boot17.product.controller;
 import java.util.Map;
 
 import org.shark.boot17.product.dto.ProductDTO;
+import org.shark.boot17.product.dto.response.ApiPageResponse;
 import org.shark.boot17.product.dto.response.ApiResponseDTO;
 import org.shark.boot17.product.service.ProductService;
 import org.springframework.data.domain.Page;
@@ -91,6 +92,21 @@ public class ProductApiController {
                                                   .results(Map.of("productPage", productService.findProductList(pageable)))
                                                   .build();
     return ResponseEntity.ok(apiResponseDTO);
+  }
+  
+//----- 조건 검색 요청 (특정 카테고리에 해당하는 제품 목록 반환)
+  //      응답을 위해서 ApiPageResponse 커스텀 클래스 활용
+  @GetMapping("/categories/{id}")
+  public ResponseEntity<ApiPageResponse<ProductDTO>> listInCategory(
+      @PageableDefault(page = 1, size = 5, sort = "productId", direction = Direction.DESC) 
+      Pageable pageable,
+      @PathVariable(value = "id") Integer categoryId
+  ) {
+    // 클라이언트는 page = 1로 시작, 서버 내부에서는 page = 0으로 시작
+    pageable = pageable.withPage(pageable.getPageNumber() - 1);
+    Page<ProductDTO> productPage = productService.findProductListByCategory(categoryId, pageable);
+    ApiPageResponse<ProductDTO> apiPageResponse = new ApiPageResponse<>(productPage);
+    return ResponseEntity.ok(apiPageResponse);
   }
   
 }

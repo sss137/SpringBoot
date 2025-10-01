@@ -1,6 +1,8 @@
 package org.shark.boot17.product.repository;
 
 import org.shark.boot17.product.entity.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /*
@@ -17,6 +19,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /*
  * 쿼리 메소드 (Query Method)
+ * 
  * 1. JPQL을 메소드로 대신 처리할 수 있도록 제공하는 기능입니다.
  * 2. 메소드의 이름을 이용해서 JPQL을 생성하고 조회합니다.
  * 3. 메소드의 이름은 "find + 엔티티명 + By + 필드명 + 키워드" 규칙을 사용합니다. (엔티티명은 생략 가능합니다.)
@@ -41,9 +44,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *  15) OrderBy          | findByNameOrderByCodeDesc   | WHERE m.name = ?1 ORDER BY m.code DESC
  *      -----------------+-----------------------------+---------------------------------------
  */
-public interface ProductRepository extends JpaRepository<Product, Integer>{
+
+public interface ProductRepository extends JpaRepository<Product, Integer> {
   
-  //JpaRepository를 상속만 받으면 기본 CRUD는 모두 처리 가능
+  // 카테고리별 조회
+  Page<Product> findByCategoryCategoryId(Integer categoryId, Pageable pageable);
   
 }
 

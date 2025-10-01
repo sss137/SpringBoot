@@ -71,6 +71,12 @@ public class ProductServiceImpl implements ProductService {
     return productPage.map(p -> ProductDTO.toDTO(p));
   }
 
+  @Override
+  public Page<ProductDTO> findProductListByCategory(Integer categoryId, Pageable pageable) {
+    Page<Product> productPage = productRepository.findByCategoryCategoryId(categoryId, pageable);
+    return productPage.map(p -> ProductDTO.toDTO(p));
+  }
+  
 }
 
 

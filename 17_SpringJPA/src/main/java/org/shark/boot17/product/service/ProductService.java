@@ -10,6 +10,7 @@ public interface ProductService {
   void deleteProduct(Integer productId);
   ProductDTO findProductById(Integer productId);
   Page<ProductDTO> findProductList(Pageable pageable);
+  Page<ProductDTO> findProductListByCategory(Integer categoryId, Pageable pageable);
   
 }
 

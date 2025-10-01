@@ -16,11 +16,9 @@ import lombok.ToString;
 @Builder
 @ToString
 public class ApiResponseDTO {
-
   private String code;
   private String message;
   private Map<String, Object> results;
-  
 }
 
 
