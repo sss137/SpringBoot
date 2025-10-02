@@ -10,9 +10,10 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import lombok.Getter;
 
-//소셜 로그인 성공 시 SecurityContext에 저장될 사용자 정보
+//----- 소셜 로그인 성공 시 Security Context에 저장될 사용자 정보
+
 @Getter
-public class CustomOAuth2User implements OAuth2User{
+public class CustomOAuth2User implements OAuth2User {
   
   private Map<String, Object> attributes;
   private User foundUser;
@@ -35,9 +36,7 @@ public class CustomOAuth2User implements OAuth2User{
   
   @Override
   public String getName() {
-    return foundUser.getKakaoId();
+    return foundUser.getId();
   }
   
 }
-
-

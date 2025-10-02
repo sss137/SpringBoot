@@ -19,10 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
  * 2. 일반적으로 사용하는 @ContextConfiguration보다 더 많은 기능을 제공합니다.
  * 3. 모든 Bean을 실제로 로드하여 완전한 통합 테스트 환경을 제공합니다.
  */
-
 @SpringBootTest
 class ApplicationTests {
-
   @Autowired
   private BoardMapper boardMapper;
   

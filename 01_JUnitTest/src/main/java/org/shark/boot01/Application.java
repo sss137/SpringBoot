@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  *    2) @EnableAutoConfiguration : Spring Boot의 자동 설정 기능 활성화
  *    3) @ComponentScan
  */
-
 @SpringBootApplication
 public class Application {
 

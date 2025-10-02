@@ -30,7 +30,6 @@ import org.shark.boot01.board.dto.BoardDTO;
  *    1) 여러 Mapper Interface를 등록합니다.
  *    2) @Configration 클래스에 Mapper Interface가 저장된 패키지를 등록
  */
-
 @Mapper
 public interface BoardMapper {
 

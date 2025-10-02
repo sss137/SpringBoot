@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6'">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
 
-  <h1>Log In</h1>
+  <h1>Log in</h1>
   
-  <!-- (필기) -->
+  <!-- 
+    org.springframework.security.oauth2.client.web.server.DefaultServerOAuth2AuthorizationRequestResolver 클래스의
+    DEFAULT_AUTHORIZATION_REQUEST_PATTERN 필드에 OAuth2 로그인 요청을 위한 주소가 등록되어 있습니다.
+    등록된 주소 : "/oauth2/authorization/{registrationId}"
+  -->
   <a th:href="@{/oauth2/authorization/kakao}">카카오 로그인</a>
+  <br>
+  <a th:href="@{/oauth2/authorization/naver}">네이버 로그인</a>
   
   <br><br>
   
   <a th:href="@{/}">홈</a>
-
+  
 </body>
 </html>
-
-

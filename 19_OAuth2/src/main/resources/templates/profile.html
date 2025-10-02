@@ -13,19 +13,18 @@
     <div>
       <img th:src="${user.profileImage}" width="500px">
     </div>
-    <div>
-      <p>kakao id <span th:text="${user.kakaoId}"></span></p>
-      <p>닉네임 <span th:text="${user.profileNickname}"></span></p>
-      <p>권한 <span th:text="${user.role}"></span></p>
+    <div>      
+      <p>ID <span th:text="${user.id}"></span></p>
+      <p>닉네임 <span th:text="${user.nickname}"></span></p>
+      <p>이메일 <span th:text="${user.email}"></span></p>
+      <p>권한 <span th:text="${user.role}"></span>
     </div>
     <a th:href="@{/logout}">로그아웃</a>
   </div>
-
+  
   <div th:unless="${user}">
-    <p>로그인 정보를 찾을 수 없습니다.</p>
+    <p>로그인 정보를 찾을 수 없습니다.
   </div>
-
+  
 </body>
 </html>
-
-

@@ -15,18 +15,21 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "users")
+
 @Getter
 @Setter
 public class User {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  private Long uid;
   
-  @Column(name = "kakao_id", unique = true)
-  private String kakaoId;
+  @Column(unique = true)
+  private String id;
   
-  @Column(name = "profile_nickname")
-  private String profileNickname;
+  private String nickname;
+  
+  private String email;
   
   @Column(name = "profile_image")
   private String profileImage;
@@ -36,10 +39,11 @@ public class User {
   
   protected User() {}
   
-  public static User createUser(String kakaoId, String profileNickname, String profileImage) {
+  public static User CreateUser(String id, String nickname, String email, String profileImage) {
     User user = new User();
-    user.kakaoId = kakaoId;
-    user.profileNickname = profileNickname;
+    user.id = id;
+    user.nickname = nickname;
+    user.email = email;
     user.profileImage = profileImage;
     user.role = Role.USER;
     return user;
@@ -47,10 +51,8 @@ public class User {
 
   @Override
   public String toString() {
-    return "User [id=" + id + ", kakaoId=" + kakaoId + ", profileNickname=" + profileNickname + ", profileImage="
+    return "User [uid=" + uid + ", id=" + id + ", nickname=" + nickname + ", profileImage="
         + profileImage + ", role=" + role + "]";
   }
   
 }
-
-

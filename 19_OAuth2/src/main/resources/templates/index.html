@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6'">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -9,7 +9,7 @@
 
   <h1>Welcome Home</h1>
   
-  <div sec:authorize="!isAuthenticated()">
+  <div sec:authorize="! isAuthenticated()">
     <a th:href="@{/login}">로그인</a>
   </div>
 
@@ -20,8 +20,6 @@
     님 환영합니다.
     <a th:href="@{/logout}">로그아웃</a>
   </div>
-
+  
 </body>
 </html>
-
-

@@ -9,9 +9,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
   private final CustomOAuth2UserService customOAuth2UserService;
@@ -29,5 +29,3 @@ public class SecurityConfig {
   }
   
 }
-
-
